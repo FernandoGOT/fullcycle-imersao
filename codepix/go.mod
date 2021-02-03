@@ -1,3 +1,3 @@
-module github.com/fernandogot/fullcycle-imersao/codepix-go
+module github.com/FernandoGOT/fullcycle-imersao/codepix-go
 
 go 1.15
