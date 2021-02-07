@@ -7,6 +7,10 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+func init() {
+	govalidator.SetFieldsRequiredByDefault(true)
+}
+
 type Account struct {
 	Base      `valid:"required"`
 	OwnerName string    `gorm:"column:owner_name;type:varchar(255);not null" valid:"notnull"`
@@ -18,19 +22,18 @@ type Account struct {
 
 func (account *Account) isValid() error {
 	_, err := govalidator.ValidateStruct(account)
-
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
-func NewAccount(bank *Bank, number string, ownername string) (*Account, error) {
+func NewAccount(bank *Bank, number string, ownerName string) (*Account, error) {
 	account := Account{
-		OwnerName: ownername,
 		Bank:      bank,
+		BankID:    bank.ID,
 		Number:    number,
+		OwnerName: ownerName,
 	}
 
 	account.ID = uuid.NewV4().String()
@@ -40,6 +43,5 @@ func NewAccount(bank *Bank, number string, ownername string) (*Account, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return &account, nil
 }
